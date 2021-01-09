@@ -1,0 +1,8 @@
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\bin\Debug\netcoreapp3.1\Shared.deps.json
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\bin\Debug\netcoreapp3.1\Shared.dll
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\obj\Debug\netcoreapp3.1\Shared.AssemblyInfoInputs.cache
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\obj\Debug\netcoreapp3.1\Shared.AssemblyInfo.cs
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\bin\Debug\netcoreapp3.1\Shared.pdb
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\obj\Debug\netcoreapp3.1\Shared.dll
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\obj\Debug\netcoreapp3.1\Shared.pdb
+C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Shared\obj\Debug\netcoreapp3.1\Shared.csproj.CoreCompileInputs.cache
