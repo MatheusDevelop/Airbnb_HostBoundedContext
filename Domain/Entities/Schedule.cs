@@ -1,4 +1,5 @@
-﻿using Shared.Entities;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,29 +9,32 @@ namespace Domain.Entities
 {
     public class Schedule:Entity
     {
-        public Schedule(DateTime checkIn, DateTime checkout)
+        protected Schedule()
         {
-            CheckIn = checkIn;
-            Checkout = checkout;
-
-            UnvaibleDays = getUnvaibleDays();
 
         }
-        public DateTime CheckIn { get; set; }
-        public DateTime Checkout { get; set; }
-        public List<DateTime> UnvaibleDays { get;}
+        public Schedule(DateTime checkIn, DateTime checkout)
+        {
+            CheckIn = checkIn.Date;
+            Checkout = checkout.Date;
+        }
 
-        private List<DateTime> getUnvaibleDays()
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime CheckIn { get; set; }
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime Checkout { get; set; }
+
+       
+        public List<DateTime> getUnvaibleDays()
         {
             var list = new List<DateTime>();
-            var countForDates = 1;
+            var countForDates = (int)Checkout.Subtract(CheckIn).TotalDays;
 
-            for (int x = CheckIn.Day ; x < Checkout.Day; x++)
+            for (int x = 0 ; x < countForDates; x++)
             {
-                list.Add(CheckIn.AddDays(countForDates));
-                countForDates++;
+                list.Add(CheckIn.AddDays(x));
             }
-            list.Add(CheckIn);
+            list.Add(Checkout);
             return list;
         }
 

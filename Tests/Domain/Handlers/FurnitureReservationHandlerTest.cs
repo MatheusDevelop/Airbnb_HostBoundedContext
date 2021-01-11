@@ -30,7 +30,7 @@ namespace Tests.Domain.Handlers
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
 
-            Assert.True(handler.Valid);
+            Assert.True(handler.Contract.Valid);
             
         }
 
@@ -48,11 +48,13 @@ namespace Tests.Domain.Handlers
 
             var payment = new Payment(500, 200);
 
+
+
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment, Checkin = DateTime.Now, Checkout = DateTime.Now.AddDays(3) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid);
 
         }
         [Fact]
@@ -72,7 +74,7 @@ namespace Tests.Domain.Handlers
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment,Checkin= DateTime.Now, Checkout = DateTime.Now.AddDays(3) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid);
 
         }
         [Fact]
@@ -92,7 +94,7 @@ namespace Tests.Domain.Handlers
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment, Checkin = DateTime.Now, Checkout = DateTime.Now.AddDays(3) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid);
 
         }
         [Fact]
@@ -112,7 +114,7 @@ namespace Tests.Domain.Handlers
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment, Checkin = DateTime.Now.AddDays(-2), Checkout = DateTime.Now.AddDays(2) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid);
 
         }
 
@@ -128,15 +130,14 @@ namespace Tests.Domain.Handlers
 
             var handler = new FurnitureReservationHandler(repFurniture, repAcommodation, payService);
 
-            var user = new User("Matheus barbosa", "mathvierabarbosa@gmail.com", new Adress("Rua x", "123", "SÃO PAULO"));
-            var furniture = new Furniture("Descriçao", new Adress("Rua y", "321", "SÃO PAULO"));
-
-            var payment = new Payment(500, 500);
+            var user = new User("", "mathvierabarbosa@gmail.com", new Adress("Rua x", "123", "SÃO PAULO"));
+            var furniture = new Furniture("", new Adress("Rua y", "321", "SÃO PAULO"));
+            var payment = new Payment(500, 200);
 
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment, Checkin = DateTime.Now, Checkout = DateTime.Now.AddDays(3) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid && res.Result.Errors.Count == 3);
 
         }
         [Fact]
@@ -146,21 +147,19 @@ namespace Tests.Domain.Handlers
             var repAcommodation = new AcommodationRepository();            
             var repFurniture = new FurnitureRepository();
 
-            repFurniture.throwException = true;
-
             var payService = new PaymentService();
 
             var handler = new FurnitureReservationHandler(repFurniture, repAcommodation, payService);
 
-            var user = new User("Matheus", "mathvierabarbosa@gmail.com", new Adress("Rua x", "123", "SÃO PAULO"));
-            var furniture = new Furniture(" descriçao", new Adress("Rua y", "321", "SÃO PAULO"));
+            var user = new User("", "mathvierabarbosa@gmail.com", new Adress("Rua x", "123", "SÃO PAULO"));
+            var furniture = new Furniture("", new Adress("Rua y", "321", "SÃO PAULO"));
 
-            var payment = new Payment(500, 500);
+            var payment = new Payment(500, 200);
 
             var commandRequest = new FurnitureReservationRequest() { User = user, Furniture = furniture, Payment = payment, Checkin = DateTime.Now, Checkout = DateTime.Now.AddDays(3) };
             var res = handler.Handle(commandRequest, new System.Threading.CancellationToken());
 
-            Assert.True(handler.Invalid);
+            Assert.True(handler.Contract.Invalid);
 
         }
     }

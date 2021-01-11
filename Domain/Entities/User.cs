@@ -9,19 +9,23 @@ namespace Domain.Entities
 {
     public class User:Entity
     {
+        protected User()
+        {
+
+        }
         public User(string name, string email, Adress adress)
         {
             Name = name;
             Email = email;
             Adress = adress;
 
-            AddNotifications(new ValidationContract()
+            Contract  = new ValidationContract()
                 .Requires()
                 .IsNotNullOrEmpty(Name,"User Name","User name is null or empty")
                 .IsNotNullOrEmpty(Email,"User email","User email is null or empty")
                 .IsEmail(Email, "User email", "User email is not valid")
-            );            
-            AddNotifications(Adress);
+            ;            
+            Contract.AddNotifications(Adress);
 
         }
 

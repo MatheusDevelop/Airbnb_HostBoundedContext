@@ -11,7 +11,4 @@ C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infras
 C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\bin\Debug\netcoreapp3.1\Domain.pdb
 C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\bin\Debug\netcoreapp3.1\Shared.pdb
 C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csproj.CopyComplete
-C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\bin\Debug\netcoreapp3.1\Infrastructure.runtimeconfig.json
-C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\bin\Debug\netcoreapp3.1\Infrastructure.runtimeconfig.dev.json
-C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.genruntimeconfig.cache
 C:\Users\willi\Documents\Matheus\Estudos\ArquiteturaSFW\AirBnbHostContext\Infrastructure\obj\Debug\netcoreapp3.1\Infrastructure.csproj.CoreCompileInputs.cache

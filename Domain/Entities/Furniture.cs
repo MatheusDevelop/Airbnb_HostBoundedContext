@@ -9,17 +9,22 @@ namespace Domain.Entities
 {
     public class Furniture:Entity
     {
+        protected Furniture()
+        {
+
+        }
+
         public Furniture(string details, Adress adress)
         {
             Details = details;
             Adress = adress;
 
-            AddNotifications(new ValidationContract()
+            Contract  = new ValidationContract()
                 .Requires()
                 .IsNotNullOrEmpty(Details, "Furniture details", "This details of furniture is null or empty")
                 .HasMaxLen(Details,255, "Furniture details", "This details exceed the limit of 255 characters")
-                );
-            AddNotifications(Adress);
+            ;
+            Contract.AddNotifications(Adress);
         }
 
         public string Details { get; private set; }

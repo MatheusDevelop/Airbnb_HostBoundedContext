@@ -3,14 +3,21 @@ using FluentValidator.Validation;
 using Shared.ValueObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace Domain.ValueObjects
 {
     public class Adress:ValueObject
     {
+
+        protected Adress()
+        {
+
+        }
         public Adress(string street, string number, string city)
         {
+            id = Guid.NewGuid();
             Street = street;
             Number = number;
             City = city;
@@ -23,6 +30,7 @@ namespace Domain.ValueObjects
                 ); ;
         }
 
+        public Guid id { get; set; }
         public string Street { get; private set; }
         public string Number { get; private set; }
         public string City { get; private set; }

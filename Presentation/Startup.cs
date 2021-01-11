@@ -31,17 +31,22 @@ namespace Presentation
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();            
+            services.AddControllers();
+            services.Configure<AirBnbContext>(
+                Configuration.GetSection(nameof(AirBnbContext)));
 
-            services.AddSingleton<IFurnitureRepository, FurnitureRepository>();
-            services.AddSingleton<IAcommodationRepository,AcommodationRepository>();
+            services.AddSingleton<IAirBnbContext>(sp =>
+                sp.GetRequiredService<IOptions<AirBnbContext>>().Value);
+
+            services.AddTransient<IFurnitureRepository, FurnitureRepository>();
+            services.AddTransient<IAcommodationRepository, AcommodationRepository>();
             services.AddTransient<IPaymentService, PaymentService>();
 
-            services.AddScoped<IRequestHandler<FurnitureReservationRequest, FurnitureReservationResult>, FurnitureReservationHandler>();
+            services.AddTransient<IRequestHandler<FurnitureReservationRequest, FurnitureReservationResult>, FurnitureReservationHandler>();
 
             services.AddMediatR(typeof(Startup));
             services.AddControllers().AddNewtonsoftJson();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

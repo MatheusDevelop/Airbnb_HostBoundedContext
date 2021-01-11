@@ -8,6 +8,10 @@ namespace Domain.Entities
 {
     public class Acommodation:Entity
     {
+        protected Acommodation()
+        {
+
+        }
         public Acommodation(User user, Furniture furniture, DateTime checkin, DateTime checkout)
         {
             User = user;
@@ -15,12 +19,13 @@ namespace Domain.Entities
             Checkin = checkin.Date;
             Checkout = checkout.Date;
 
-            AddNotifications(new ValidationContract()
+            Contract = new ValidationContract()
                 .Requires()
                    .IsGreaterOrEqualsThan(checkin, DateTime.Now.Date, "AccomodationCheckIn", "This accomodation checkin is not valid because this date is in past")
                    .IsGreaterThan(checkout, DateTime.Now, "AccomodationCheckOut", "This accomodation checkout is not valid because the time")
                    .IsFalse(checkin.Date == checkout.Date, "AccomodationCheckout", "This accomodation checkout is not valid because the checkin is the same time")
-           );
+                ;
+           
 
         }
         public User User { get; private set; }
@@ -32,10 +37,9 @@ namespace Domain.Entities
         {
             //Business rules
 
-            if (!payment.Valid)
+            if (!payment.Contract.Valid)
             {
-                AddNotifications(payment);
-                AddNotification("Payment","payment not valid, check the values");
+                Contract.AddNotifications(payment.Contract);
             }
             Payment = payment;           
 

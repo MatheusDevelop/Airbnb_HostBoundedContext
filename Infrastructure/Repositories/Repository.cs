@@ -1,14 +1,16 @@
 ﻿using Infrastructure.Context;
-using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infrastructure.Repositories
 {
     public class Repository
     {
-        
+        public MongoClient client { get; set; }
+        public IMongoDatabase database { get; set; }
+        public Repository(IAirBnbContext con)
+        {
+            client = new MongoClient(con.ConnectionString);
+            database = client.GetDatabase(con.DatabaseName);
+        }
     }
 }

@@ -4,6 +4,7 @@ using Domain.Entities;
 using Domain.Repositories;
 using Domain.Services;
 using FluentValidator;
+using FluentValidator.Validation;
 using MediatR;
 using System;
 using System.Threading;
@@ -11,15 +12,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Handlers
 {
-    public class FurnitureReservationHandler : Notifiable ,  IRequestHandler<
+    public class FurnitureReservationHandler : IContract, IRequestHandler<
         FurnitureReservationRequest,
         FurnitureReservationResult
     >
-   
+
     {
         private readonly IFurnitureRepository _furnitureRep;
         private readonly IAcommodationRepository _acommodationRep;
         private readonly IPaymentService _paymentService;
+        public ValidationContract Contract { get; }
 
         public FurnitureReservationHandler(
             IFurnitureRepository furnitureRep
@@ -29,16 +31,26 @@ namespace Domain.Handlers
             _furnitureRep = furnitureRep;
             _acommodationRep = acommodationRep;
             _paymentService = paymentService;
+
+            Contract = new ValidationContract();
+
         }
+
 
         public Task<FurnitureReservationResult> Handle(FurnitureReservationRequest request, CancellationToken cancellationToken)
         {
             var result = new FurnitureReservationResult();
 
-            if (request.Invalid)
+
+            Contract.AddNotifications(
+                request.User.Contract
+                ,request.Payment.Contract
+                ,request.Furniture.Contract);
+
+
+            if (Contract.Invalid)
             {
-                AddNotifications(request);
-                foreach (var notification in Notifications)
+                foreach (var notification in Contract.Notifications)
                 {
                     result.Errors.Add(notification.Message);
                 }
@@ -50,17 +62,18 @@ namespace Domain.Handlers
 
                 if (_furnitureRep.AlreadyHostedForThisTime(
                         request.Furniture,
-                        request.Checkin,
-                        request.Checkout
+                        request.Checkin.Date,
+                        request.Checkout.Date
                     ))
                 {
-                    AddNotification("Furniture handler", "this furniture already hosted for this time");
+                    Contract.AddNotification("Furniture handler", "this furniture already hosted for this time");
                 }
 
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                AddNotification("Internal error", ex.Message);
+                Contract.AddNotification("Internal error", ex.Message);
 
                 result.Errors.Add(ex.Message);
                 return Task.FromResult(result);
@@ -75,18 +88,18 @@ namespace Domain.Handlers
 
             newAccomodationReserve.AddPayment(request.Payment);
 
-            if (newAccomodationReserve.Invalid)
+            if (newAccomodationReserve.Contract.Invalid)
             {
-                AddNotification("Error in acomoddation", "This acomoddation is invalid");
-                AddNotifications(newAccomodationReserve);
+                Contract.AddNotification("Error in acomoddation", "This acomoddation is invalid");
+                Contract.AddNotifications(newAccomodationReserve.Contract);
             }
 
 
 
-            if (this.Invalid)
+            if (Contract.Invalid)
             {
 
-                foreach(var notification in Notifications)
+                foreach (var notification in Contract.Notifications)
                 {
                     result.Errors.Add(notification.Message);
                 }
@@ -94,15 +107,16 @@ namespace Domain.Handlers
             }
 
 
-            
+
             try
             {
                 _paymentService.makeAPayment(request.Payment);
-                _acommodationRep.AddAcommodationAndUpdateFurnitureSchedule(newAccomodationReserve);   
+                _acommodationRep.AddAcommodationAndUpdateFurnitureSchedule(newAccomodationReserve);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                AddNotification("External error", ex.Message);
+                Contract.AddNotification("External error", ex.Message);
 
                 result.Errors.Add(ex.Message);
                 return Task.FromResult(result);
