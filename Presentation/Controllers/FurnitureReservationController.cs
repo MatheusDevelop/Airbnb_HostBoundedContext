@@ -20,7 +20,12 @@ namespace Presentation.Controllers
             [FromServices] IMediator mediator
         )
         {
-            return Ok(mediator.Send(command));
+            var res = mediator.Send(command);
+            if(res.Result.Errors.Count > 0)
+            {
+                return BadRequest(res.Result.Errors);
+            }
+            return Ok(res.Result);
         }
     }
 }

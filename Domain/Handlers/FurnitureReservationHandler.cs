@@ -90,7 +90,6 @@ namespace Domain.Handlers
 
             if (newAccomodationReserve.Contract.Invalid)
             {
-                Contract.AddNotification("Error in acomoddation", "This acomoddation is invalid");
                 Contract.AddNotifications(newAccomodationReserve.Contract);
             }
 
